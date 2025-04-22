@@ -6,7 +6,7 @@ metadata:
   name: mongo-app
   namespace: spring-boot
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       name: mongo-app
@@ -18,7 +18,7 @@ spec:
       imagePullSecrets:
       - name: dockerreposecret
       containers:
-      - image: pachaanilkumar/mongo-app:473f07e
+      - image: pachaanilkumar/mongo-app-service:473f07e
         name: mongo-app
         ports:
         - name: mongo-app
