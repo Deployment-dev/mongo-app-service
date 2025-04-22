@@ -2,26 +2,26 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    name: mongo-app-service
-  name: mongo-app-service
+    name: mongo-app
+  name: mongo-app
   namespace: spring-boot
 spec:
   replicas: 2
   selector:
     matchLabels:
-      name: mongo-app-service
+      name: mongo-app
   template:
     metadata:
       labels:
-        name: mongo-app-service
+        name: mongo-app
     spec:
       imagePullSecrets:
       - name: dockerreposecret
       containers:
-      - image: pachaanilkumar/mongo-app-service:473f07e
+      - image: pachaanilkumar/mongo-app:473f07e
         name: mongo-app
         ports:
-        - name: mongo-app-service
+        - name: mongo-app
           containerPort: 8080
 ---
 # Node Port Service
@@ -29,8 +29,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    name: mongo-app-service
-  name: mongo-app-service
+    name: mongo-app
+  name: mongo-app
   namespace: spring-boot
 spec:
   type: NodePort
@@ -38,4 +38,4 @@ spec:
     - port: 8080
       targetPort: 8080
   selector:
-    name: mongo-app-service
+    name: mongo-app
