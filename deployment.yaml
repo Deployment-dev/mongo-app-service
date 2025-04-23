@@ -18,7 +18,7 @@ spec:
       imagePullSecrets:
       - name: dockerreposecret
       containers:
-      - image: pachaanilkumar/mongo-app-service:32f8f41
+      - image: pachaanilkumar/mongo-app-service:454e356
         name: mongo-app
         ports:
         - name: mongo-app
