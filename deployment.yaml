@@ -47,7 +47,7 @@ spec:
           value: cookie,authToken,LtpaToken2,mobile,bankAccountNumber
         - name: CHAR_LENGTH
           value: '6'
-        image: nprd-quay-quay-quay-enterprise.apps.nprd.ibm.local/ibmdev/bff-account-statement-service-web:67411ce
+        image: pachaanilkumar/mongo-app-service:fbf8717
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
