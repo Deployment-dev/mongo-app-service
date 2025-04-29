@@ -2,8 +2,8 @@
 kind: Gateway
 apiVersion: networking.istio.io/v1alpha3
 metadata:
-  name: bff-account-statement-service-web-gateway
-  namespace: boi-prelogin-profile-web-bff-dev
+  name: bff-account-transforming-service-gateway
+  namespace: boi-external-proxy-dev
 spec:
   selector:
     istio: ingressgateway
@@ -16,4 +16,4 @@ spec:
         mode: SIMPLE
         credentialName: router-certs-default
       hosts:
-        - bff-account-st-boi-prelogin-profile-web-bff-dev.apps.nprd.ibm.local
+        - bff-account-tr-boi-external-proxy-dev.apps.nprd.ibm.local

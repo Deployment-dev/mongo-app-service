@@ -2,15 +2,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: bff-account-statement-service-web
-  namespace: boi-prelogin-profile-web-bff-dev
+  name: bff-account-transforming-service
+  namespace: boi-external-proxy-dev
   labels:
-    app: bff-account-statement-service-web
+    app: bff-account-transforming-service
 spec:
   selector:
-    app: bff-account-statement-service-web
+    app: bff-account-transforming-service
   ports:
-  - name: bff-account-st
+  - name: bff-account-tr
     protocol: TCP
     appProtocol: http
     port: 8080

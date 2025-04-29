@@ -3,19 +3,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: bff-account-statement-service-web
-  name: bff-account-statement-service-web
-  namespace: boi-prelogin-profile-web-bff-dev
+    app: bff-account-transforming-service
+  name: bff-account-transforming-service
+  namespace: boi-external-proxy-dev
 spec:
   selector:
     matchLabels:
-      app: bff-account-statement-service-web
+      app: bff-account-transforming-service
   template:
     metadata:
       annotations:
         sidecar.istio.io/inject: 'true'
       labels:
-        app: bff-account-statement-service-web
+        app: bff-account-transforming-service
         maistra.io/expose-route: 'true'
     spec:
       containers:
@@ -47,7 +47,7 @@ spec:
           value: cookie,authToken,LtpaToken2,mobile,bankAccountNumber
         - name: CHAR_LENGTH
           value: '6'
-        image: pachaanilkumar/mongo-app-service:fbf8717
+        image: nprd-quay-quay-quay-enterprise.apps.nprd.ibm.local/ibmdev/bff-account-transforming-service:67411ce
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
@@ -56,10 +56,10 @@ spec:
             port: 8080
           initialDelaySeconds: 10000
           timeoutSeconds: 10
-        name: bff-account-statement-service-web
+        name: bff-account-transforming-service
         ports:
         - containerPort: 8080
-          name: bff-account-st
+          name: bff-account-tr
         readinessProbe:
           failureThreshold: 3
           httpGet:

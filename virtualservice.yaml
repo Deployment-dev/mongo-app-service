@@ -2,11 +2,11 @@
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: bff-account-statement-service-web-vs
-  namespace: boi-prelogin-profile-web-bff-dev
+  name: bff-account-transforming-service-vs
+  namespace: boi-external-proxy-dev
 spec:
   gateways:
-  - bff-account-statement-service-web-gateway
+  - bff-account-transforming-service-gateway
   hosts:
   - '*'
   http:
@@ -15,6 +15,6 @@ spec:
         prefix: /
     route:
     - destination:
-        host: bff-account-statement-service-web
+        host: bff-account-transforming-service
         port:
           number: 8080

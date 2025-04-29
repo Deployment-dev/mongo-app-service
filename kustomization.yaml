@@ -9,4 +9,4 @@ resources:
 - hpa.yaml
 - gateway.yaml
 - virtualservice.yaml
-namespace: boi-prelogin-profile-web-bff-dev
+namespace: boi-external-proxy-dev
