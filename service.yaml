@@ -1,0 +1,16 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: credit-card-service
+  namespace: investment-dev
+  labels:
+    app: credit-card-service
+spec:
+  selector:
+    app: credit-card-service
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8080
+    targetPort: 8080

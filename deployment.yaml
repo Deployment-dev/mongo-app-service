@@ -1,41 +1,77 @@
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    name: mongo-app
-  name: mongo-app
-  namespace: spring-boot
+    app: credit-card-service
+  name: credit-card-service
+  namespace: investment-dev
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      name: mongo-app
+      app: credit-card-service
   template:
     metadata:
+      annotations:
+        sidecar.istio.io/inject: 'true'
       labels:
-        name: mongo-app
+        app: credit-card-service
     spec:
-      imagePullSecrets:
-      - name: dockerreposecret
       containers:
-      - image: pachaanilkumar/mongo-app-service:0a37f6a
-        name: mongo-app
+      - args:
+        - java -jar app.jar --spring.profiles.active=DEV
+        command:
+        - /bin/sh
+        - -c
+        env:
+        - name: SPRING_CONFIG_IMPORT
+          value: optional:configserver:http://config-service.boi-shared-services-config-svc-mob-dev.svc.cluster.local:8080
+        - name: SERVER_PORT
+          value: '8080'
+        - name: spring.datasource.username
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: db-credentials
+        - name: spring.datasource.password
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: db-credentials
+        - name: MASKING_ENABLED
+          value: 'true'
+        - name: MASKING_FIELDS
+          value: mobileNo,email,phoneNum,phoneNumber,primaryAcctNumber,accountNumber,blaAccount,telephone,deLinkedAcctNumbers,imeiNumber
+        - name: CHAR_LENGTH
+          value: '6'
+        image: nprd-quay-quay-quay-enterprise.apps.nprd.ibm.local/ibmdev/credit-card-service:2708368
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8080
+          initialDelaySeconds: 10000
+          timeoutSeconds: 5
+        name: credit-card-service
         ports:
-        - name: mongo-app
-          containerPort: 8085
----
-# Node Port Service
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    name: mongo-app
-  name: mongo-app
-  namespace: spring-boot
-spec:
-  type: NodePort
-  ports:
-    - port: 8085
-      targetPort: 8085
-  selector:
-    name: mongo-app
+        - containerPort: 8080
+          name: credit-car
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8080
+          initialDelaySeconds: 100
+          periodSeconds: 10
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+          requests:
+            cpu: 100m
+            memory: 512Mi
+        stdin: true
+        tty: true
+      restartPolicy: Always
