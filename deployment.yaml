@@ -3,19 +3,20 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: credit-card-service
-  name: credit-card-service
-  namespace: investment-dev
+    app: bff-account-statement-service-web
+  name: bff-account-statement-service-web
+  namespace: boi-prelogin-profile-web-bff-dev
 spec:
   selector:
     matchLabels:
-      app: credit-card-service
+      app: bff-account-statement-service-web
   template:
     metadata:
       annotations:
         sidecar.istio.io/inject: 'true'
       labels:
-        app: credit-card-service
+        app: bff-account-statement-service-web
+        maistra.io/expose-route: 'true'
     spec:
       containers:
       - args:
@@ -28,6 +29,8 @@ spec:
           value: optional:configserver:http://config-service.boi-shared-services-config-svc-mob-dev.svc.cluster.local:8080
         - name: SERVER_PORT
           value: '8080'
+        - name: TZ
+          value: Asia/Kolkata
         - name: spring.datasource.username
           valueFrom:
             secretKeyRef:
@@ -41,10 +44,10 @@ spec:
         - name: MASKING_ENABLED
           value: 'true'
         - name: MASKING_FIELDS
-          value: mobileNo,email,phoneNum,phoneNumber,primaryAcctNumber,accountNumber,blaAccount,telephone,deLinkedAcctNumbers,imeiNumber
+          value: cookie,authToken,LtpaToken2,mobile,bankAccountNumber
         - name: CHAR_LENGTH
           value: '6'
-        image: nprd-quay-quay-quay-enterprise.apps.nprd.ibm.local/ibmdev/credit-card-service:2708368
+        image: nprd-quay-quay-quay-enterprise.apps.nprd.ibm.local/ibmdev/bff-account-statement-service-web:67411ce
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
@@ -52,11 +55,11 @@ spec:
             path: /actuator/health/liveness
             port: 8080
           initialDelaySeconds: 10000
-          timeoutSeconds: 5
-        name: credit-card-service
+          timeoutSeconds: 10
+        name: bff-account-statement-service-web
         ports:
         - containerPort: 8080
-          name: credit-car
+          name: bff-account-st
         readinessProbe:
           failureThreshold: 3
           httpGet:
@@ -64,10 +67,10 @@ spec:
             port: 8080
           initialDelaySeconds: 100
           periodSeconds: 10
-          timeoutSeconds: 5
+          timeoutSeconds: 10
         resources:
           limits:
-            cpu: 1000m
+            cpu: 500m
             memory: 1Gi
           requests:
             cpu: 100m

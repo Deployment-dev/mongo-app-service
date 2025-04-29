@@ -1,20 +1,20 @@
 
-apiVersion: networking.istio.io/v1alpha3
+apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: credit-card-service-vs
-  namespace: investment-dev
+  name: bff-account-statement-service-web-vs
+  namespace: boi-prelogin-profile-web-bff-dev
 spec:
-  hosts:
-  - "*"
   gateways:
-  - credit-card-service-gateway
+  - bff-account-statement-service-web-gateway
+  hosts:
+  - '*'
   http:
   - match:
     - uri:
-        prefix: /credit-card-service
+        prefix: /
     route:
     - destination:
-        host: credit-card-service
+        host: bff-account-statement-service-web
         port:
           number: 8080

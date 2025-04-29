@@ -1,16 +1,19 @@
 
-apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
+apiVersion: networking.istio.io/v1alpha3
 metadata:
-  name: credit-card-service-gateway
-  namespace: investment-dev
+  name: bff-account-statement-service-web-gateway
+  namespace: boi-prelogin-profile-web-bff-dev
 spec:
   selector:
     istio: ingressgateway
   servers:
-  - port:
-      number: 80
-      name: http
-      protocol: HTTP
-    hosts:
-    - "*"
+    - port:
+        number: 443
+        protocol: HTTPS
+        name: https
+      tls:
+        mode: SIMPLE
+        credentialName: router-certs-default
+      hosts:
+        - bff-account-st-boi-prelogin-profile-web-bff-dev.apps.nprd.ibm.local

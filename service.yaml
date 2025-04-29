@@ -2,15 +2,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: credit-card-service
-  namespace: investment-dev
+  name: bff-account-statement-service-web
+  namespace: boi-prelogin-profile-web-bff-dev
   labels:
-    app: credit-card-service
+    app: bff-account-statement-service-web
 spec:
   selector:
-    app: credit-card-service
+    app: bff-account-statement-service-web
   ports:
-  - name: http
+  - name: bff-account-st
     protocol: TCP
+    appProtocol: http
     port: 8080
     targetPort: 8080
